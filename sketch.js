@@ -1,31 +1,40 @@
-var capture;
+'use strict'
 var mic;
-
-function setup() {
-  createCanvas(1280, 960);
-  capture = createCapture(VIDEO);
-  capture.size(1280, 960);
-  //capture.hide();
-
-  mic = new p5.AudioIn();
-
-  // start the Audio Input.
-  mic.start();
+var preload = () => {
 }
 
-function draw() {
+let capture;
 
-  var myImage = capture.loadPixels();
+var setup = () => {
+    background(255);
+    mic= new p5.AudioIn();
+    mic.start();
+    createCanvas(windowWidth, windowHeight);
+    ellipseMode(CENTER);
 
-  background(0);
-  var vol = mic.getLevel();
+    capture = createCapture(VIDEO);
+    capture.size(1280, 960);
+    capture.hide();
+    noStroke();
+
+}
 
 
-  for (var x = 0; x < 1280; x += 20) {
-    for (var y = 0; y < 960; y += 20) {
-      fill(myImage.get(x, y));
+var draw = () => {
+  var volume= mic.getLevel();
 
-      ellipse(x, y, vol * 200);
+ text(volume,30,30);
+
+
+    background(0);
+    let img = capture.loadPixels();
+    let hi = width/960;
+    let vi = height/480;
+    for (let x = 0; x < 1280; x+=10) {
+        for (let y = 0; y < 960; y+=20) {
+            fill(img.get(x, y))
+              ellipse(x, y, 10);
+
+        }
     }
-  }
 }
